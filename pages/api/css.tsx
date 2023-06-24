@@ -10,6 +10,7 @@ export default async function css(req: NextRequest) {
         if (item[0].startsWith("x-")) continue;
         headers.set(item[0], item[1].replaceAll(req.nextUrl.host, "fonts.googleapis.com"));
     }
+    headers.set("accept-encoding", "gzip, deflate");
 
     const res = await fetch("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300", {
         "headers": headers
