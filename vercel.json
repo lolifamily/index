@@ -1,5 +1,11 @@
 {
   "public": true,
+  "functions": {
+    "pages/api/release.tsx": {
+      "memory": 128,
+      "maxDuration": 1
+    }
+  },
   "headers": [{
     "source": "/Vercel-OK",
     "headers": [{
