@@ -20,7 +20,6 @@ export default async function css(req: NextRequest) {
     for (let item of res.headers.entries()) {
         if (item[0] === "content-encoding" || item[0] === "content-length" || item[0] === "alt-svc") continue;
         headers.set(item[0], item[1].replaceAll("fonts.googleapis.com", req.nextUrl.host));
-        console.log(item[0], item[1].replaceAll("fonts.googleapis.com", req.nextUrl.host));
     }
 
     return new NextResponse((await res.text()).replaceAll("fonts.googleapis.com", req.nextUrl.host), {
