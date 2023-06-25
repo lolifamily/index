@@ -2,7 +2,7 @@ import {NextRequest, NextResponse} from "next/server";
 import {next} from "sucrase/dist/types/parser/tokenizer";
 
 export const config = {
-    match: "^(?!\/api\/(css|status)$).*"
+    matcher: "^(?!\/api\/(css|status)$).*"
 };
 
 const allowList = ["lolifamily.js.org", "lolifamily.vercel.app", "lolifamilies.vercel.app",
