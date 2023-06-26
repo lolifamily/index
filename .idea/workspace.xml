@@ -40,6 +40,18 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="build" type="js.build_tools.npm" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="build" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -52,7 +64,7 @@
       <workItem from="1687699180524" duration="7090000" />
       <workItem from="1687750823431" duration="3139000" />
       <workItem from="1687755474092" duration="15000" />
-      <workItem from="1687766777828" duration="192000" />
+      <workItem from="1687766777828" duration="555000" />
     </task>
     <servers />
   </component>
