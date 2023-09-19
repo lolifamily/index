@@ -22,7 +22,7 @@ export default async function css(req: NextRequest) {
         headers.set(item[0], item[1].replaceAll("fonts.googleapis.com", req.nextUrl.host));
     }
 
-    return new NextResponse((await res.text()).replaceAll("fonts.googleapis.com", req.nextUrl.host), {
+    return new NextResponse((await res.text()).replaceAll("fonts.gstatic.com", req.nextUrl.host).replaceAll("fonts.googleapis.com", req.nextUrl.host), {
         "status": res.status,
         "statusText": res.statusText,
         "headers": headers
