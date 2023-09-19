@@ -13,6 +13,12 @@ const nextConfig = {
                 "key": "Content-Security-Policy",
                 "value": "default-src 'self' 'unsafe-eval' 'unsafe-inline'"
             }]
+        },{
+            "source": "/api/status",
+            "headers": [{
+                "key": "Cache-Control",
+                "value": "s-maxage=63072000"
+            }]
         }]
     },
     async rewrites() {
@@ -25,15 +31,7 @@ const nextConfig = {
                 "destination": "https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5/:path*"
             },{
                 "source": "/:path",
-                "destination": "https://:host/:path?logged",
-                "has": [{
-                    "type": "host",
-                    "value": "(?<host>)"
-                }],
-                "missing": [{
-                    "type": "query",
-                    "key": "logged"
-                }]
+                "destination": "https://lolifamily.pages.dev/:path"
             }]
         }
     },
