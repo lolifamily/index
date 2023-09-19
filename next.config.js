@@ -24,11 +24,15 @@ const nextConfig = {
                 "source": "/Font-Awesome@5/:path*",
                 "destination": "https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5/:path*"
             },{
-                "source": "/(.*)",
-                "destination": "https://index-git-main-lolifamily.vercel.app/$1",
-                "missing": [{
+                "source": "/:path",
+                "destination": "https://:host/:path?logged",
+                "has": [{
                     "type": "host",
-                    "value": "index-git-main-lolifamily.vercel.app"
+                    "value": "(?<host>)"
+                }]
+                "missing": [{
+                    "type": "query",
+                    "key": "logged"
                 }]
             }]
         }
