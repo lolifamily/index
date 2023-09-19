@@ -22,14 +22,14 @@ const nextConfig = {
                 "destination": "https://fonts.gstatic.com/s/sourcesanspro/:path*"
             },{
                 "source": "/Font-Awesome@5/:path*",
-                "destination": "https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5/:path"
+                "destination": "https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5/:path*"
             },{
                 "source": "/(.*)",
-                "destination": "/$1"
-            }],
-            fallback: [{
-                "source": "/(.*)",
-                "destination": "/"
+                "destination": "https://index-git-main-lolifamily.vercel.app/$1",
+                "missing": [{
+                    "type": "host",
+                    "value": "index-git-main-lolifamily.vercel.app"
+                }]
             }]
         }
     },
