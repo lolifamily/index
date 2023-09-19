@@ -30,8 +30,8 @@ const nextConfig = {
                 "source": "/Font-Awesome@5/:path*",
                 "destination": "https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5/:path*"
             },{
-                "source": "/:path",
-                "destination": "https://lolifamily.pages.dev/:path"
+                "source": "/:path*",
+                "destination": "https://lolifamily.pages.dev/:path*"
             }]
         }
     },
