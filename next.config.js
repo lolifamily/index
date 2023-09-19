@@ -29,7 +29,7 @@ const nextConfig = {
                 "has": [{
                     "type": "host",
                     "value": "(?<host>)"
-                }]
+                }],
                 "missing": [{
                     "type": "query",
                     "key": "logged"
