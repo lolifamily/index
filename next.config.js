@@ -22,7 +22,7 @@ const nextConfig = {
                 "destination": "https://fonts.gstatic.com/s/sourcesanspro/:path*"
             },{
                 "source": "/(.*)",
-                "destination": "/assets/$1"
+                "destination": "/$1"
             }],
             fallback: [{
                 "source": "/(.*)",
