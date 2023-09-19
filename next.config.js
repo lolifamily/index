@@ -21,6 +21,9 @@ const nextConfig = {
                 "source": "/s/sourcesanspro/:path*",
                 "destination": "https://fonts.gstatic.com/s/sourcesanspro/:path*"
             },{
+                "source": "/Font-Awesome@5/:path*",
+                "destination": "https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5/:path"
+            },{
                 "source": "/(.*)",
                 "destination": "/$1"
             }],
