@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="b8a948ce-7d14-4bfe-9c03-40c98b11d014" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/status.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/status.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,7 +29,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/charliez0/Desktop/rootfs/public/vercel/profile",
+    "last_opened_file_path": "/home/charliez0/Desktop/rootfs/index-coding/source/middleware.ts",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -64,7 +63,7 @@
       <workItem from="1687699180524" duration="7090000" />
       <workItem from="1687750823431" duration="3139000" />
       <workItem from="1687755474092" duration="15000" />
-      <workItem from="1687766777828" duration="555000" />
+      <workItem from="1687766777828" duration="1416000" />
     </task>
     <servers />
   </component>
