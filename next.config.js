@@ -24,11 +24,8 @@ const nextConfig = {
                 "source": "/Font-Awesome@5/:path*",
                 "destination": "https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5/:path*"
             },{
-                "source": "/api/css",
-                "destination": "/api/css"
-            },{
-                "source": "/:path*",
-                "destination": "https://lolifamily.pages.dev/:path*"
+                "source": "/:path(((?!api/css).)*)",
+                "destination": "https://lolifamily.pages.dev/:path"
             }]
         }
     },
