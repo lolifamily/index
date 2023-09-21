@@ -12,6 +12,9 @@ const nextConfig = {
             },{
                 "key": "Cache-Control",
                 "value": "s-maxage=63072000"
+            },{
+                "key": "testing",
+                "value": "testing"
             }]
         },{
             "source": "/(.*)",
