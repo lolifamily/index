@@ -5,15 +5,6 @@ const nextConfig = {
     skipTrailingSlashRedirect: true,
     async headers() {
         return [{
-            "source": "/(.*)",
-            "headers": [{
-                "key": "strict-transport-security",
-                "value": "max-age=63072000; includeSubDomains; preload"
-            },{
-                "key": "Content-Security-Policy",
-                "value": "default-src 'self' 'unsafe-eval' 'unsafe-inline'"
-            }]
-        },{
             "source": "/api/status",
             "headers": [{
                 "key": "Content-Type",
@@ -21,6 +12,15 @@ const nextConfig = {
             },{
                 "key": "Cache-Control",
                 "value": "s-maxage=63072000"
+            }]
+        },{
+            "source": "/(.*)",
+            "headers": [{
+                "key": "strict-transport-security",
+                "value": "max-age=63072000; includeSubDomains; preload"
+            },{
+                "key": "Content-Security-Policy",
+                "value": "default-src 'self' 'unsafe-eval' 'unsafe-inline'"
             }]
         }]
     },
