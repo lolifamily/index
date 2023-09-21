@@ -9,21 +9,15 @@ const nextConfig = {
             "headers": [{
                 "key": "Content-Type",
                 "value": "text/plain"
-            },{
-                "key": "X-testing",
-                "value": "testing"
             }]
         },{
             "source": "/(.*)",
             "headers": [{
-                "key": "strict-transport-security",
+                "key": "Strict-Transport-Security",
                 "value": "max-age=63072000; includeSubDomains; preload"
             },{
                 "key": "Content-Security-Policy",
                 "value": "default-src 'self' 'unsafe-eval' 'unsafe-inline'"
-            },{
-                "key": "X-TEST",
-                "value": "s-maxage=63072000"
             }]
         }]
     },
