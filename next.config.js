@@ -18,6 +18,9 @@ const nextConfig = {
     async rewrites() {
         return {
             beforeFiles: [{
+                "source": "/cdn-cgi/:path*",
+                "destination": "https://cf.lolifamily.js.org/non-exist-destination?path=:path*"
+            },{
                 "source": "/s/sourcesanspro/:path*",
                 "destination": "https://fonts.gstatic.com/s/sourcesanspro/:path*"
             },{
@@ -25,7 +28,7 @@ const nextConfig = {
                 "destination": "https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5/:path*"
             },{
                 "source": "/:path((?!api/css).*)",
-                "destination": "https://lolifamily.pages.dev/:path"
+                "destination": "https://cf.lolifamily.js.org/:path"
             }]
         }
     },
