@@ -10,7 +10,7 @@ const nextConfig = {
                 "key": "Content-Type",
                 "value": "text/plain"
             },{
-                "key": "testing",
+                "key": "X-testing",
                 "value": "testing"
             }]
         },{
@@ -22,7 +22,7 @@ const nextConfig = {
                 "key": "Content-Security-Policy",
                 "value": "default-src 'self' 'unsafe-eval' 'unsafe-inline'"
             },{
-                "key": "Cache-Control",
+                "key": "X-TEST",
                 "value": "s-maxage=63072000"
             }]
         }]
