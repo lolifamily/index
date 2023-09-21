@@ -16,6 +16,9 @@ const nextConfig = {
         },{
             "source": "/api/status",
             "headers": [{
+                "key": "Content-Type",
+                "value": "text/plain"
+            },{
                 "key": "Cache-Control",
                 "value": "s-maxage=63072000"
             }]
@@ -29,6 +32,9 @@ const nextConfig = {
             },{
                 "source": "/Font-Awesome@5/:path*",
                 "destination": "https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5/:path*"
+            },{
+                "source": "/api/css",
+                "destination": "/api/css"
             },{
                 "source": "/:path*",
                 "destination": "https://lolifamily.pages.dev/:path*"
