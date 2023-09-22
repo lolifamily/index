@@ -7,6 +7,7 @@
     <list default="true" id="b8a948ce-7d14-4bfe-9c03-40c98b11d014" name="Changes" comment="Update">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/next.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/assets/css/main.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/css/main.min.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +34,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/charliez0/Desktop/rootfs/public/vercel/profile/public",
+    "last_opened_file_path": "/home/charliez0/Desktop/rootfs/public/vercel/blog",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -75,7 +76,8 @@
       <workItem from="1687766777828" duration="1416000" />
       <workItem from="1695111838522" duration="2181000" />
       <workItem from="1695126957359" duration="1906000" />
-      <workItem from="1695271526842" duration="9665000" />
+      <workItem from="1695271526842" duration="10834000" />
+      <workItem from="1695390017846" duration="1719000" />
     </task>
     <task id="LOCAL-00001" summary="Update">
       <option name="closed" value="true" />
