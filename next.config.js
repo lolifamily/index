@@ -5,6 +5,12 @@ const nextConfig = {
     skipTrailingSlashRedirect: true,
     async headers() {
         return [{
+            "source": "/api/status",
+            "headers": [{
+                "key": "Content-Type",
+                "value": "text/plain"
+            }]
+        },{
             "source": "/(.*)",
             "headers": [{
                 "key": "Strict-Transport-Security",
