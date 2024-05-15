@@ -32,9 +32,6 @@ const nextConfig = {
             },{
                 "source": "/Font-Awesome@6/:path(.*)",
                 "destination": "https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/:path"
-            },{
-                "source": "/:path(.*)",
-                "destination": "/:path"
             }]
         }
     },
