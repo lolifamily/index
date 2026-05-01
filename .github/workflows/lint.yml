@@ -1,0 +1,48 @@
+name: Lint
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: 'lts/*'
+          package-manager-cache: false
+
+      - name: Get pnpm store path
+        run: echo PNPM_STORE_PATH=$(pnpm store path --silent) >> "$GITHUB_ENV"
+
+      - uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        with:
+          path: ${{ env.PNPM_STORE_PATH }}
+          key: pnpm-cache-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: pnpm-cache-${{ runner.os }}-${{ runner.arch }}-
+   
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Typecheck
+        id: typecheck
+        run: pnpm typecheck
+        continue-on-error: true
+
+      - name: ESLint
+        id: lint
+        run: pnpm lint
+        continue-on-error: true
+
+      - name: Prune pnpm store
+        run: pnpm store prune
+
+      - name: Check results
+        if: steps.lint.outcome != 'success' || steps.typecheck.outcome != 'success'
+        run: exit 1

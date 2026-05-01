@@ -1,0 +1,80 @@
+---
+import siteConfig from '@/config/site.config';
+import Card from '@/components/Card.astro';
+import WaveDivider from '@/components/WaveDivider.astro';
+import { Content } from '@/content/about.md';
+
+const { projects } = siteConfig;
+---
+
+<Card class="
+  flex w-full max-w-2xl flex-col gap-8 self-stretch
+  md:min-w-108
+"
+>
+  {/* 上半：项目列表 */}
+  <section aria-label="Projects">
+    <ul class="
+      grid grid-cols-1 gap-3
+      sm:grid-cols-2
+    "
+    >
+      {projects.map(project => (
+        <li class="
+          group flex flex-col gap-2 rounded-2xl border-2 border-border
+          bg-white/25 px-5 py-4 shadow-sm
+          transition-[translate,background-color,box-shadow] duration-300
+          hover:bg-white/40 hover:shadow-md
+          dark:bg-white/5
+          dark:hover:bg-white/10
+          forced-colors:hover:border-[Highlight]
+          motion-safe:update-fast:hover:-translate-y-1
+        "
+        >
+          <div class="flex items-center justify-between gap-2">
+            <h2 class="
+              min-w-0 truncate font-identity text-xl font-medium
+              text-card-heading transition-colors
+              group-hover:text-hover
+            "
+            >
+              {project.name}
+            </h2>
+            <ul class="flex shrink-0 gap-1">
+              {project.links.map(link => (
+                <li>
+                  <a
+                    href={link.url}
+                    title={link.title}
+                    class="
+                      inline-flex size-9 items-center justify-center
+                      rounded-full text-primary
+                      transition-[scale,background-color,color] duration-200
+                      hover:bg-hover/15 hover:text-hover
+                      forced-colors:transition-transform
+                      forced-colors:hover:text-[Highlight]
+                      motion-safe:update-fast:hover:scale-110
+                    "
+                  >
+                    <link.icon width="1.25rem" height="1.25rem" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <p class="text-sm/relaxed text-secondary">
+            {project.description}
+          </p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  {/* 分割线 */}
+  <WaveDivider />
+
+  {/* 下半：纯 markdown 文档 */}
+  <article data-markdown class="px-3">
+    <Content />
+  </article>
+</Card>

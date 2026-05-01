@@ -1,0 +1,19 @@
+{
+  "extends": "astro/tsconfigs/strictest",
+  "compilerOptions": {
+    /* JSX 配置 - 使用 SolidJS */
+    "jsxImportSource": "solid-js",
+    /* lint .d.ts files */
+    "skipLibCheck": false,
+    /* 路径别名 - 简化版 */
+    "paths": {
+      "@/*": ["./src/*"],
+      "node_modules/*": ["./node_modules/*"],
+    },
+    "plugins": [
+      {
+        "name": "@astrojs/ts-plugin"
+      }
+    ]
+  }
+}

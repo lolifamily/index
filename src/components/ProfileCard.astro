@@ -1,0 +1,88 @@
+---
+import siteConfig from '@/config/site.config';
+import Card from './Card.astro';
+
+import { Picture } from 'astro:assets';
+
+const { profile, links } = siteConfig;
+---
+
+<Card class="
+  w-full max-w-108 text-center
+  md:min-w-108
+"
+>
+  {/* 头像区域 */}
+  <div class="
+    mx-auto mb-10 w-fit overflow-hidden rounded-full border-2 border-border
+    shadow-avatar
+  "
+  >
+    <Picture
+      src={profile.avatar.src}
+      alt={profile.avatar.alt}
+      width={profile.avatar.width}
+      height={profile.avatar.height}
+      widths={[
+        profile.avatar.width,
+        profile.avatar.width * 1.25,
+        profile.avatar.width * 1.5,
+        profile.avatar.width * 1.75,
+        profile.avatar.width * 2,
+        profile.avatar.width * 2.5,
+        profile.avatar.width * 3.5,
+        profile.avatar.width * 5,
+      ]}
+      formats={['avif']}
+      fallbackFormat="webp"
+      sizes={`calc(clamp(1rem, 0.85rem + 0.15vw, 1.25rem) * ${profile.avatar.width / 16})`}
+      style={{
+        width: `${profile.avatar.width / 16}rem`,
+        height: `${profile.avatar.height / 16}rem`,
+      }}
+      data-zoom-src={profile.avatar.src.src}
+      priority
+    />
+  </div>
+
+  {/* 姓名 */}
+  <h1 class="
+    mb-3 font-identity text-3xl font-light tracking-widest text-card-heading
+  "
+  >
+    {profile.name}
+  </h1>
+
+  {/* 职位 */}
+  <p class="
+    mb-8 font-identity text-base/loose tracking-[0.15em] text-primary uppercase
+  "
+  >
+    {profile.title}
+  </p>
+
+  {/* 社交链接 */}
+  <nav>
+    <ul class="flex justify-center gap-5">
+      {links.map(item => (
+        <li>
+          <a
+            href={item.url}
+            title={item.title}
+            class="
+              inline-block text-primary transition-[scale,color,text-shadow]
+              duration-200
+              hover:text-hover
+              hover:[text-shadow:0_0_8px_color-mix(in_srgb,var(--color-hover)_50%,transparent)]
+              forced-colors:transition-transform
+              forced-colors:hover:text-[Highlight]
+              motion-safe:update-fast:hover:scale-110
+            "
+          >
+            <item.icon width="3rem" height="3rem" />
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</Card>

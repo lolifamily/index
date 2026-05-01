@@ -1,0 +1,57 @@
+
+/* Typography - moved from global.css */
+
+@layer base {
+  :is(h1, h2, h3, h4, h5, h6) {
+    line-height: 1.5;
+  }
+
+  h1 {
+    font-size: var(--text-4xl);      /* 2.25rem (36px) */
+    font-weight: var(--font-weight-bold);
+  }
+
+  h2 {
+    font-size: var(--text-3xl);      /* 1.875rem (30px) */
+    font-weight: var(--font-weight-semibold);
+  }
+
+  h3 {
+    font-size: var(--text-2xl);      /* 1.5rem (24px) */
+    font-weight: var(--font-weight-semibold);
+  }
+
+  h4 {
+    font-size: var(--text-xl);       /* 1.25rem (20px) */
+    font-weight: var(--font-weight-medium);
+  }
+
+  h5 {
+    font-size: var(--text-lg);       /* 1.125rem (18px) */
+    font-weight: var(--font-weight-medium);
+  }
+
+  h6 {
+    font-size: var(--text-base);     /* 1rem (16px) */
+    font-weight: var(--font-weight-medium);
+  }
+
+  /* Responsive typography */
+  @media (max-width: 1023px) {
+    h1 { 
+      font-size: var(--text-3xl);
+    }
+    h2 { 
+      font-size: var(--text-2xl);
+    }
+    h3 { 
+      font-size: var(--text-xl);
+    }
+    h4 { 
+      font-size: var(--text-lg);
+    }
+    h5 { 
+      font-size: var(--text-base);
+    }
+  }
+}

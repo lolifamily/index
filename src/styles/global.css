@@ -1,0 +1,243 @@
+@import "tailwindcss";
+
+@import "./markdown.css";
+@import "./jetbrains-mono.css";
+@import "./comfortaa.css";
+@import "./typography.css";
+
+@source inline("sr-only");
+@custom-variant preload {
+  &:is(body:not(.loaded) *) {
+    @slot;
+  }
+}
+@custom-variant reduce-transparency (@media (prefers-reduced-transparency: reduce));
+@custom-variant update-fast {
+  @media not all and (update: slow) {
+    @media not all and (update: none) {
+      @slot;
+    }
+  }
+}
+
+/* Tailwind CSS v4 Theme Configuration */
+@theme {
+  /* 响应式根字号 */
+  --text-root: var(--base-font-size);
+
+  /* Identity核心颜色 */
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-muted: var(--color-muted);
+  --color-hover: var(--color-hover);
+  --color-border: var(--color-border);
+  --color-border-soft: var(--color-border-soft);
+  --color-canvas: var(--color-canvas);
+
+  /* Identity特有变量 */
+  --color-gradient-start: var(--color-gradient-start);
+  --color-gradient-end: var(--color-gradient-end);
+  --color-card-heading: var(--color-card-heading);
+  --color-social-hover: var(--color-social-hover);
+
+  /* 厚涂卡片渐变：注册到 background-image namespace，对应 bg-card */
+  --background-image-card: var(--gradient-card);
+
+  /* Shadows */
+  --shadow-card: var(--shadow-card);
+  --shadow-avatar: var(--shadow-avatar);
+  
+  /* 字体 */
+  --font-identity: var(--font-identity);
+}
+
+/* Identity Theme Variables */
+:root {
+  /* Base font size for responsive scaling */
+  --base-font-size: clamp(1rem, 0.85rem + 0.15vw, 1.25rem);
+  
+  /* 通用字体 */
+  --font-sans: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', "Noto Color Emoji";
+  
+  /* Identity专用字体（效果字体，仅用于姓名/职位标题等可爱位置） */
+  --font-identity: "Comfortaa Variable", var(--font-sans);
+
+  /* Identity核心颜色 - 粉色可爱风（从背景图取色） */
+  --color-primary: #5a3a4a;        /* 深玫瑰棕，主文字 */
+  --color-secondary: #8b6171;      /* 中玫瑰，次要文字 */
+  --color-muted: #705361;          /* 玫瑰棕灰，静音文字 (vs 卡片 5.55:1 / canvas 6.35:1 / 白 6.78:1，全 AA) */
+  --color-hover: #c2185b;          /* 深玫瑰，强调/悬停 (AA 5.61:1，与标题色统一) */
+  --color-border: rgba(233, 30, 99, 0.33);         /* 边框：基色=主调粉 #e91e63，alpha 0.33 在白底上呈柔和玫瑰 */
+  --color-border-soft: rgba(248, 200, 211, 0.85);  /* 弱边框：基色=原 border #f8c8d3，alpha 0.85 略带透明 */
+  --color-canvas: #fff5f8;         /* 兜底页面底色（图片不可用时） */
+
+  /* Identity特有颜色 */
+  /* 背景图加载前的兜底：取背景图主色（左下暖阳橘 → 右上晨曦紫蓝），
+     dark 由 multiply 滤镜统一染色，无需重定义 */
+  --color-gradient-start: #ffce98;
+  --color-gradient-end: #c8b8f0;
+  --color-card-heading: #c2185b;
+  --color-social-hover: #e91e63;
+  --color-avatar-glow: #ffa090;    /* 头像光晕色：light 用暖桃，与浅暖背景融合 */
+
+  /* Markdown 内联色块（kbd 比 code 亮，模拟按键顶部受光）
+     注：card 实际是 bg-card * 0.4 + 背景图，视觉色 ~#f5d8d4 偏亮，
+     所以 light 必须用"凹陷感"深色才能跳出 */
+  --color-code: #e0b5c5;           /* 深玫瑰，vs primary 4.81:1 AA / vs card ~1.6:1 */
+  --color-kbd:  #f0c8d6;           /* 按键顶部高光，vs primary 6.32:1 AAA */
+
+  /* Markdown <mark> 荧光笔（蜜桃金：亮 + 桃粉调，vs primary 6.58:1 AAA） */
+  --color-highlight: #ffc88a;
+
+  /* Markdown admonition 5 色（约定俗成色相 + R/B 通道偏移加粉感）
+     vs card 视觉色 ~#f5d8d4，全部 ≥ AA */
+  --color-admonition-note:      #3a4a9c;  /* 深靛蓝带粉，5.94:1 AAA */
+  --color-admonition-tip:       #3d6850;  /* 深森林绿，4.76:1 AA（绿+粉互补，粉感弱） */
+  --color-admonition-important: #7c3a8a;  /* 深紫粉，5.60:1 AAA */
+  --color-admonition-warning:   #94402a;  /* 深桃橘，5.20:1 AAA */
+  --color-admonition-caution:   #a02050;  /* 深玫瑰红，5.52:1 AAA */
+
+  /* 滚动条样式 */
+  --scrollbar-size-hover: 0.4rem;
+  --scrollbar-thumb-radius: 0.2rem;
+  --scrollbar-thumb: color-mix(in srgb, var(--color-muted) 70%, var(--color-canvas));
+  --scrollbar-thumb-hover: var(--color-secondary);
+  --scrollbar-thumb-active: var(--color-primary);
+  --scrollbar-track: color-mix(in srgb, var(--color-hover) 6%, var(--color-canvas));
+
+  /* 厚涂卡片：四层颜料堆叠（暖橙/玫瑰/紫粉/主底），primary 对最浅块仍 ≈8.9:1 AA */
+  --gradient-card:
+    radial-gradient(ellipse at 22% 18%, #fff4e8 0%, transparent 55%),
+    radial-gradient(ellipse at 82% 28%, #ffe1ec 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 95%, #f0d8e6 0%, transparent 65%),
+    linear-gradient(135deg, #fff0f3, #fde4ed);
+
+  /* Shadows：外阴影 + 顶部高光 inset + 底部颜料沉淀 inset */
+  --shadow-card:
+    0 10px 40px rgba(255, 100, 140, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -3px 10px rgba(180, 100, 130, 0.1);
+  /* 头像光环：两层 avatar-glow 色 alpha 递减做模糊发光渐变 */
+  --shadow-avatar:
+    0 0 1.5rem 0.4rem color-mix(in srgb, var(--color-avatar-glow) 32%, transparent),
+    0 0 3.5rem 0.7rem color-mix(in srgb, var(--color-avatar-glow) 14%, transparent);
+}
+
+/* Dark mode - 夜色版同一画面：暗紫粉调，保留粉氛围而非发灰 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary: #ffd6e0;        /* 浅粉，主文字 */
+    --color-secondary: #ffa8c5;      /* 中粉，次要文字 */
+    --color-muted: #d8a8bb;          /* 暖紫粉，静音文字 (vs 卡片 5.50:1 / canvas 8.63:1 / 黑 10.24:1，全 AA) */
+    --color-hover: #ff8fb1;          /* 亮粉，强调/悬停 */
+    --color-border: rgba(255, 192, 211, 0.3); /* 半透明粉，边框 */
+    --color-border-soft: rgba(255, 192, 211, 0.15); /* 弱边框：border 同色 alpha 0.15（border 0.3 的一半） */
+    --color-canvas: #2a1018;         /* 暗紫粉兜底底色 */
+
+    --color-card-heading: #ffc4d6;
+    --color-social-hover: #ff8fb1;
+    --color-avatar-glow: #ff8fb1;    /* dark 用亮粉，融入暗酒红底 */
+
+    /* Markdown 内联色块（dark card 视觉色 ~#3d1e2e 极暗，用凸起感亮色跳出） */
+    --color-code: #6a3a52;           /* 亮玫瑰，vs primary 6.66:1 AAA / vs card ~1.6:1 */
+    --color-kbd:  #7a4862;           /* 按键顶部高光，vs primary 5.92:1 AAA */
+
+    /* Markdown <mark> 荧光笔（暗夜暖桃金粉：dark 受 primary 浅粉文字约束 L≤0.128 才能 AA） */
+    --color-highlight: #8a4848;      /* vs primary 5.13:1 AAA */
+
+    /* Markdown admonition dark（亮色文字 on 暗紫红 card，全部 AAA） */
+    --color-admonition-note:      #9aa8ff;  /* 亮粉紫蓝，6.32:1 */
+    --color-admonition-tip:       #7ad9a0;  /* 亮翡翠带暖，8.46:1 */
+    --color-admonition-important: #e89cd4;  /* 亮紫粉，6.78:1 */
+    --color-admonition-warning:   #ffb070;  /* 亮暖橘金，7.85:1 */
+    --color-admonition-caution:   #ff7088;  /* 亮玫瑰红，5.32:1（跟 hover 拉开偏更红） */
+
+    /* 暗夜厚涂卡片：暗紫粉色调四层渐变，primary 对最浅块仍 ≈6.7:1 AA */
+    --gradient-card:
+      radial-gradient(ellipse at 22% 18%, #6b3a52 0%, transparent 55%),
+      radial-gradient(ellipse at 82% 28%, #5a2a45 0%, transparent 60%),
+      radial-gradient(ellipse at 50% 95%, #3d1a2e 0%, transparent 65%),
+      linear-gradient(135deg, #5a2d43, #4a2238);
+
+    --shadow-card:
+      0 10px 40px rgba(255, 100, 140, 0.28),
+      inset 0 1px 0 rgba(255, 200, 220, 0.15),
+      inset 0 -3px 10px rgba(20, 5, 15, 0.3);
+    /* --shadow-avatar 由 :root 通过 var(--color-avatar-glow) 自动联动，无需重复 */
+  }
+}
+
+/* ========== Identity Theme Minimal Additions ========== */
+
+/* 动画关键帧定义 - 仅这些无法用Tailwind实现
+   注：不使用 perspective() —— 透视投影会让 rotateX 中间帧出现
+   "近大远小"的梯形形变，视觉上就是用户看到的"倾斜"。
+   去掉透视后 rotateX 退化为绕水平中心轴的正交旋转，等同于
+   Y 方向轻微缩短，干净的"中心上下翻转"，无任何斜变。 */
+@keyframes identity-card-enter {
+  from {
+    opacity: 0;
+    transform: rotateX(15deg);
+  }
+  to {
+    opacity: 1;
+    transform: rotateX(0deg);
+  }
+}
+
+/* Firefox 等标准浏览器（避免 Chrome 121+ 覆盖 webkit 伪元素状态） */
+@supports not selector(::-webkit-scrollbar) {
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  }
+}
+
+/* Webkit 浏览器 */
+::-webkit-scrollbar {
+  width: var(--scrollbar-size-hover);
+  height: var(--scrollbar-size-hover);
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: var(--scrollbar-thumb-radius);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: var(--scrollbar-thumb-active);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--scrollbar-track);
+}
+
+/* 无障碍支持 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (forced-colors: active) {
+  :root {
+    --scrollbar-thumb: CanvasText;
+    --scrollbar-thumb-hover: Highlight;
+    --scrollbar-thumb-active: Highlight;
+  }
+}

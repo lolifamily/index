@@ -1,0 +1,174 @@
+name: Build and Deploy
+
+on:
+  push:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: 'lts/*'
+          package-manager-cache: false
+
+      # 手动管理 pnpm store 缓存以启用增量复用
+      # setup-node 的 package-manager-cache 不支持 restore-keys，
+      # 导致依赖更新时 cache key 变化，必须全部重新下载。
+      # 使用 restore-keys 可以复用旧缓存，pnpm 只需增量下载变更的包。
+      - name: Get pnpm store path
+        run: echo PNPM_STORE_PATH=$(pnpm store path --silent) >> "$GITHUB_ENV"
+
+      - uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        with:
+          path: ${{ env.PNPM_STORE_PATH }}
+          key: pnpm-cache-production-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: pnpm-cache-production-${{ runner.os }}-${{ runner.arch }}-
+
+      - uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        with:
+          path: |
+            .astro
+            .cache
+          key: astro-build-${{ github.sha }}
+          restore-keys: astro-build-
+
+      - run: pnpm install --frozen-lockfile --production
+
+      # Use build:full when commit title (first line) contains [full]
+      - name: Detect [full] in commit title
+        run: |
+          if git log -1 --pretty=%s | grep -q '\[full\]'; then
+            echo "BUILD_CMD=pnpm build:full" >> $GITHUB_ENV
+          else
+            echo "BUILD_CMD=pnpm build" >> $GITHUB_ENV
+          fi
+
+      - run: ${{ env.BUILD_CMD }}
+
+      - name: Deploy to Cloudflare Workers
+        if: github.ref == 'refs/heads/main'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        id: cloudflare_workers
+        run: pnpm online:workers
+        continue-on-error: true
+
+      - name: Deploy to Domestic VPS
+        if: github.ref == 'refs/heads/main'
+        uses: burnett01/rsync-deployments@66257cad6bfeb2171d3b6bfa6c9a22279dd9c3a1 # 8.0.5
+        id: domestic
+        with:
+          remote_host: "speedtest.lolifamily.js.org"
+          remote_port: 22022
+          remote_user: "root"
+          remote_path: "/var/www/html/lolifamily"
+          remote_key: ${{ secrets.SSH_KEY }}
+          path: "dist/*"
+          switches: -avzr --delete --no-owner --no-group
+        continue-on-error: true
+
+      - name: Setup SSH for signing and pushing
+        if: github.ref == 'refs/heads/main'
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keygen -y -f ~/.ssh/id_ed25519 > ~/.ssh/id_ed25519.pub
+
+          # Trust remote hosts
+          ssh-keyscan github.com gitlab.com bitbucket.org >> ~/.ssh/known_hosts
+
+          # Configure SSH signing
+          git config --global gpg.format ssh
+          git config --global user.signingkey ~/.ssh/id_ed25519.pub
+          git config --global commit.gpgsign true
+
+          # Configure git
+          git config --global init.defaultBranch main  
+
+      - name: Deploy to Cloudflare Pages
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        id: cloudflare_pages
+        run: pnpm online:pages
+        continue-on-error: true
+
+      - name: Deploy to Vercel
+        if: github.ref == 'refs/heads/main'
+        id: vercel
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: pnpm online:vercel --token ${{ secrets.VERCEL_TOKEN }}
+        continue-on-error: true
+
+      - name: Deploy to Netlify
+        if: github.ref == 'refs/heads/main'
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        id: netlify
+        run: pnpm online:netlify
+        continue-on-error: true
+
+      - name: Deploy to Git platforms
+        if: github.ref == 'refs/heads/main'
+        working-directory: dist
+        run: |
+          git init
+          git config user.name "Lolifamily Deploy Bot"
+          git config user.email "lolifamilies+ci@gmail.com"
+
+          git remote add github git@github.com:lolifamily/lolifamily.github.io.git
+          git remote add gitlab git@gitlab.com:lolifamily/lolifamily.gitlab.io.git
+          git remote add bitbucket git@bitbucket.org:lolifamily/lolifamily.bitbucket.io.git
+
+          (git fetch --depth=1 github main && git reset --soft FETCH_HEAD) || git checkout -b main
+          git add -A
+          git commit --allow-empty -S -m "Deploy $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+        
+      - name: Push to Github
+        if: github.ref == 'refs/heads/main'
+        id: github
+        working-directory: dist
+        run: git push -f github main
+        continue-on-error: true
+      - name: Push to Gitlab
+        if: github.ref == 'refs/heads/main'
+        id: gitlab
+        working-directory: dist
+        run: git push -f gitlab main
+        continue-on-error: true
+      - name: Push to Bitbucket
+        if: github.ref == 'refs/heads/main'
+        id: bitbucket
+        working-directory: dist
+        run: git push -f bitbucket main
+        continue-on-error: true
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: dist
+          path: dist
+
+      - name: Prune pnpm store
+        run: pnpm store prune
+
+      # Disabled Netlify detection because we were frequently hitting its rate limits.
+      - name: Exit with error if any step failed
+        if: |
+          steps.domestic.outcome == 'failure' || steps.cloudflare_workers.outcome == 'failure' ||
+          steps.cloudflare_pages.outcome == 'failure' || steps.vercel.outcome == 'failure' ||
+          steps.github.outcome == 'failure' || steps.gitlab.outcome == 'failure' ||
+          steps.bitbucket.outcome == 'failure'
+        run: exit 1

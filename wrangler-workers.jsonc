@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "profile",
+  "workers_dev": true,
+  "compatibility_date": "2026-03-17",
+  "preview_urls": true,
+  "assets": {
+    "directory": "dist",
+    "html_handling": "drop-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}

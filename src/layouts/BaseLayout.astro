@@ -1,0 +1,121 @@
+---
+import '@/styles/global.css';
+import 'medium-zoom-next/dist/style.css';
+
+import { Picture } from 'astro:assets';
+import { ClientRouter } from 'astro:transitions';
+import type { PageContext } from '@/types/content';
+
+import Footer from '@/components/Footer.astro';
+import MediumZoom from '@/components/MediumZoom';
+import siteConfig from '@/config/site.config';
+import { getFullPath } from '@/utils/getpath';
+
+import jbMonoNormalUrl from '@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url';
+import comfortaaUrl from '@fontsource-variable/comfortaa/files/comfortaa-latin-wght-normal.woff2?url';
+
+const { meta, profile, backgroundImage, ogImage } = siteConfig;
+const Header = siteConfig.header;
+const Favicon = siteConfig.favicon;
+
+interface Props {
+  pageContext: PageContext;
+}
+
+const { pageContext } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth font-sans text-root antialiased">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{meta.title}</title>
+    <meta name="author" content={profile.name} />
+    <meta name="description" content={meta.description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    {/* 字体预加载 - HTML parse 阶段立即下载，与 CSS bundle 并行 */}
+    <link rel="preload" href={jbMonoNormalUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={comfortaaUrl} as="font" type="font/woff2" crossorigin />
+
+    {/* 主题色配置 */}
+    <meta name="theme-color" content="#fff5f8" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#2a1018" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+
+    {/* 图标 */}
+    <Favicon />
+
+    {/* 顶部组件 */}
+    <Header />
+
+    <ClientRouter />
+
+    {/* 搜索引擎优化 */}
+    <meta name="canonical" content={Astro.url.toString()} />
+    <link rel="sitemap" href={getFullPath('/sitemap-index.xml')} />
+    {pageContext.noindex
+      ? <meta name="robots" content="noindex" />
+      : <link rel="canonical" href={Astro.url.toString()} />}
+
+    {/* Open Graph */}
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content={Astro.url.toString()} />
+    <meta property="og:title" content={meta.title} />
+    <meta property="og:description" content={meta.description} />
+    <meta property="og:image" content={new URL(ogImage, Astro.site).toString()} />
+  </head>
+
+  <body
+    class="
+      min-h-screen bg-canvas
+      bg-[linear-gradient(60deg,var(--color-gradient-start)_5%,var(--color-gradient-end))]
+      bg-fixed text-primary
+    "
+  >
+    {/* 固定背景图片层（位于渐变之上、内容之下） */}
+    <div class="
+      pointer-events-none fixed inset-0
+      forced-colors:hidden
+    "
+    >
+      <Picture
+        class="size-full object-cover"
+        src={backgroundImage}
+        alt="background image"
+        layout="none"
+        formats={['avif']}
+        fallbackFormat="webp"
+        priority
+      />
+      {/* 深色模式滤镜：叠半透明暗紫粉 + multiply，把白天底图染成夜晚同色画面 */}
+      <div class="
+        absolute inset-0 hidden bg-[#1a0814]/55 mix-blend-multiply
+        dark:block
+      "
+      />
+    </div>
+
+    {/* 主wrapper：flex-1 让主内容撑满，Footer 自然贴 wrapper 底，
+        间距完全由 Footer 自身 py-6 控制（不再加 wrapper 的 pb 双重间距）
+        注：3D透视由卡片自身 transform: perspective() 提供，避免父级
+        perspective 把消失点钉在中心导致左右两张卡斜着翻转 */}
+    <div
+      class="
+        relative flex min-h-screen flex-col items-center px-6 pt-6
+        md:px-8
+      "
+      data-content
+    >
+      {/* 主内容区域 */}
+      <div class="flex w-full flex-1 items-center justify-center">
+        <slot />
+      </div>
+
+      {/* Footer版权信息 */}
+      <Footer />
+    </div>
+
+    <MediumZoom client:idle />
+  </body>
+</html>

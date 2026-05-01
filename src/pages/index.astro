@@ -1,0 +1,16 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ProfileCard from '@/components/ProfileCard.astro';
+import ShowcaseCard from '@/components/ShowcaseCard.astro';
+
+const pageContext = {
+  path: '/',
+};
+---
+
+<BaseLayout pageContext={pageContext}>
+  <main class="flex w-full flex-wrap items-center justify-center gap-7">
+    <ProfileCard />
+    <ShowcaseCard />
+  </main>
+</BaseLayout>
