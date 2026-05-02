@@ -88,10 +88,11 @@ const currentUrl = new URL(pageContext.path, Astro.site);
     "
     >
       <Picture
-        class="size-full object-cover"
+        class="h-full! object-cover"
         src={backgroundImage}
         alt="background image"
-        layout="none"
+        layout="full-width"
+        quality="mid"
         formats={['avif']}
         fallbackFormat="webp"
         priority

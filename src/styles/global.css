@@ -178,7 +178,7 @@
    Y 方向轻微缩短，干净的"中心上下翻转"，无任何斜变。 */
 @keyframes identity-card-enter {
   from {
-    opacity: 0;
+    opacity: 0.25;
     transform: rotateX(15deg);
   }
   to {
