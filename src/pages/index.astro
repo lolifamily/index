@@ -3,8 +3,10 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import ProfileCard from '@/components/ProfileCard.astro';
 import ShowcaseCard from '@/components/ShowcaseCard.astro';
 
+import { getFullPath } from '@/utils/getpath';
+
 const pageContext = {
-  path: '/',
+  path: getFullPath('/'),
 };
 ---
 

@@ -1,21 +1,8 @@
 import { visitParents } from 'unist-util-visit-parents';
-import { h } from 'hastscript';
 import type { Root } from 'hast';
 
 export default function rehypeSanitize() {
   return function (tree: Root) {
-    visitParents(tree, 'raw', (element, parents) => {
-      if (element.value.trim() === '<!--more-->') {
-        const parent = parents[parents.length - 1];
-        if (!parent) return;
-
-        const index = parent.children.indexOf(element);
-        if (index === -1) return;
-
-        parent.children[index] = h('span', { id: 'more' });
-      }
-    });
-
     visitParents(tree, 'element', (element, parents) => {
       // GFM checkbox: <input type="checkbox" checked disabled>
       if (element.tagName !== 'input'

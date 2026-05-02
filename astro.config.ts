@@ -48,6 +48,11 @@ export default defineConfig({
       cssMinify: 'lightningcss',
       target: ['chrome99', 'edge99', 'firefox97', 'safari15'],
       sourcemap: true, // 开源项目，随便看！
+      rollupOptions: {
+        output: {
+          manualChunks: id => id.includes('node_modules/solid-js') ? 'runtime' : undefined,
+        },
+      },
     },
     css: {
       transformer: 'lightningcss',

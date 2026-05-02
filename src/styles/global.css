@@ -118,10 +118,10 @@
     0 10px 40px rgba(255, 100, 140, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.55),
     inset 0 -3px 10px rgba(180, 100, 130, 0.1);
-  /* 头像光环：两层 avatar-glow 色 alpha 递减做模糊发光渐变 */
+  /* 头像光环：两层 avatar-glow 色 alpha 递减做模糊发光渐变（半径砍半，避免雾化） */
   --shadow-avatar:
-    0 0 1.5rem 0.4rem color-mix(in srgb, var(--color-avatar-glow) 32%, transparent),
-    0 0 3.5rem 0.7rem color-mix(in srgb, var(--color-avatar-glow) 14%, transparent);
+    0 0 1rem 0.2rem color-mix(in srgb, var(--color-avatar-glow) 30%, transparent),
+    0 0 2rem 0.3rem color-mix(in srgb, var(--color-avatar-glow) 7%, transparent);
 }
 
 /* Dark mode - 夜色版同一画面：暗紫粉调，保留粉氛围而非发灰 */
@@ -160,8 +160,9 @@
       radial-gradient(ellipse at 50% 95%, #3d1a2e 0%, transparent 65%),
       linear-gradient(135deg, #5a2d43, #4a2238);
 
+    /* dark：以黑为主体保证"沉降"，掺入背景紫粉色调（近 canvas #2a1018 取深一档）避免与暖系割裂 */
     --shadow-card:
-      0 10px 40px rgba(255, 100, 140, 0.28),
+      0 10px 40px rgba(40, 12, 24, 0.55),
       inset 0 1px 0 rgba(255, 200, 220, 0.15),
       inset 0 -3px 10px rgba(20, 5, 15, 0.3);
     /* --shadow-avatar 由 :root 通过 var(--color-avatar-glow) 自动联动，无需重复 */

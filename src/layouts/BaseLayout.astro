@@ -10,6 +10,7 @@ import Footer from '@/components/Footer.astro';
 import MediumZoom from '@/components/MediumZoom';
 import siteConfig from '@/config/site.config';
 import { getFullPath } from '@/utils/getpath';
+import getRuntimePath from '@/utils/runtime-path';
 
 import jbMonoNormalUrl from '@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url';
 import comfortaaUrl from '@fontsource-variable/comfortaa/files/comfortaa-latin-wght-normal.woff2?url';
@@ -18,11 +19,16 @@ const { meta, profile, backgroundImage, ogImage } = siteConfig;
 const Header = siteConfig.header;
 const Favicon = siteConfig.favicon;
 
+// 获取 runtime chunk 路径用于预加载
+const runtimePath = await getRuntimePath();
+
 interface Props {
   pageContext: PageContext;
 }
 
 const { pageContext } = Astro.props;
+
+const currentUrl = new URL(pageContext.path, Astro.site);
 ---
 
 <!DOCTYPE html>
@@ -38,6 +44,8 @@ const { pageContext } = Astro.props;
     <link rel="preload" href={jbMonoNormalUrl} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={comfortaaUrl} as="font" type="font/woff2" crossorigin />
 
+    {runtimePath && <link rel="modulepreload" href={runtimePath} />}
+
     {/* 主题色配置 */}
     <meta name="theme-color" content="#fff5f8" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#2a1018" media="(prefers-color-scheme: dark)" />
@@ -52,15 +60,15 @@ const { pageContext } = Astro.props;
     <ClientRouter />
 
     {/* 搜索引擎优化 */}
-    <meta name="canonical" content={Astro.url.toString()} />
+    <meta name="canonical" content={currentUrl} />
     <link rel="sitemap" href={getFullPath('/sitemap-index.xml')} />
     {pageContext.noindex
       ? <meta name="robots" content="noindex" />
-      : <link rel="canonical" href={Astro.url.toString()} />}
+      : <link rel="canonical" href={currentUrl} />}
 
     {/* Open Graph */}
     <meta property="og:type" content="article" />
-    <meta property="og:url" content={Astro.url.toString()} />
+    <meta property="og:url" content={currentUrl} />
     <meta property="og:title" content={meta.title} />
     <meta property="og:description" content={meta.description} />
     <meta property="og:image" content={new URL(ogImage, Astro.site).toString()} />
