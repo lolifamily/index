@@ -45,6 +45,7 @@
 
   /* Shadows */
   --shadow-card: var(--shadow-card);
+  --inset-shadow-card: var(--inset-shadow-card);
   --shadow-avatar: var(--shadow-avatar);
   
   /* 字体 */
@@ -113,11 +114,13 @@
     radial-gradient(ellipse at 50% 95%, #f0d8e6 0%, transparent 65%),
     linear-gradient(135deg, #fff0f3, #fde4ed);
 
-  /* Shadows：外阴影 + 顶部高光 inset + 底部颜料沉淀 inset */
-  --shadow-card:
-    0 10px 40px rgba(255, 100, 140, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.55),
-    inset 0 -3px 10px rgba(180, 100, 130, 0.1);
+  /* 外阴影：仅在 section 上，绘制于 border 外侧 */
+  --shadow-card: 0 10px 40px rgba(255, 100, 140, 0.18);
+  /* 内阴影：搬到 ::before 上避免被 z=-10 的 before 遮挡（顶部高光 + 底部颜料沉淀）
+     alpha 按 1.5× 补偿 before:opacity-40 的整体衰减，回到原视觉强度 */
+  --inset-shadow-card:
+    inset 0 1px 0 rgba(255, 255, 255, 0.82),
+    inset 0 -3px 10px rgba(180, 100, 130, 0.15);
   /* 头像光环：两层 avatar-glow 色 alpha 递减做模糊发光渐变（半径砍半，避免雾化） */
   --shadow-avatar:
     0 0 1rem 0.2rem color-mix(in srgb, var(--color-avatar-glow) 30%, transparent),
@@ -161,10 +164,10 @@
       linear-gradient(135deg, #5a2d43, #4a2238);
 
     /* dark：以黑为主体保证"沉降"，掺入背景紫粉色调（近 canvas #2a1018 取深一档）避免与暖系割裂 */
-    --shadow-card:
-      0 10px 40px rgba(40, 12, 24, 0.55),
-      inset 0 1px 0 rgba(255, 200, 220, 0.15),
-      inset 0 -3px 10px rgba(20, 5, 15, 0.3);
+    --shadow-card: 0 10px 40px rgba(40, 12, 24, 0.55);
+    --inset-shadow-card:
+      inset 0 1px 0 rgba(255, 200, 220, 0.22),
+      inset 0 -3px 10px rgba(20, 5, 15, 0.45);
     /* --shadow-avatar 由 :root 通过 var(--color-avatar-glow) 自动联动，无需重复 */
   }
 }
@@ -178,7 +181,7 @@
    Y 方向轻微缩短，干净的"中心上下翻转"，无任何斜变。 */
 @keyframes identity-card-enter {
   from {
-    opacity: 0.25;
+    opacity: 0.5;
     transform: rotateX(15deg);
   }
   to {
