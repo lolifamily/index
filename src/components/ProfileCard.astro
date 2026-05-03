@@ -47,7 +47,7 @@ const { profile, links } = siteConfig;
 
   {/* 姓名 */}
   <h1 class="
-    mb-3 font-identity text-3xl font-light tracking-widest text-card-heading
+    mb-3 font-identity text-3xl font-normal tracking-widest text-card-heading
   "
   >
     {profile.name}
@@ -69,6 +69,7 @@ const { profile, links } = siteConfig;
           <a
             href={item.url}
             title={item.title}
+            aria-label={item.title}
             class="
               inline-block text-primary transition-[scale,color,text-shadow]
               duration-200
@@ -79,7 +80,7 @@ const { profile, links } = siteConfig;
               motion-safe:update-fast:hover:scale-110
             "
           >
-            <item.icon width="3rem" height="3rem" />
+            <item.icon width="3rem" height="3rem" aria-hidden="true" />
           </a>
         </li>
       ))}

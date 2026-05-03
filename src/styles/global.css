@@ -65,9 +65,9 @@
 
   /* Identity核心颜色 - 粉色可爱风（从背景图取色） */
   --color-primary: #5a3a4a;        /* 深玫瑰棕，主文字 */
-  --color-secondary: #8b6171;      /* 中玫瑰，次要文字 */
-  --color-muted: #705361;          /* 玫瑰棕灰，静音文字 (vs 卡片 5.55:1 / canvas 6.35:1 / 白 6.78:1，全 AA) */
-  --color-hover: #c2185b;          /* 深玫瑰，强调/悬停 (AA 5.61:1，与标题色统一) */
+  --color-secondary: #6e5a52;      /* 暖棕奶咖，次要文字 (去粉化与 hover 色相分离 ΔE 58.8 vs 当前 47.1) */
+  --color-muted: #6a5b54;          /* 暖棕灰，静音文字 (vs canvas 6.08:1 AA / vs card 5.13:1 AA) */
+  --color-hover: #ff0066;          /* 纯品红，强调/悬停 (饱和度 + 亮度差最大化，vs primary 2.55 / vs secondary 1.68 / vs card 3.05 AA Large) */
   --color-border: rgba(233, 30, 99, 0.33);         /* 边框：基色=主调粉 #e91e63，alpha 0.33 在白底上呈柔和玫瑰 */
   --color-border-soft: rgba(248, 200, 211, 0.85);  /* 弱边框：基色=原 border #f8c8d3，alpha 0.85 略带透明 */
   --color-canvas: #fff5f8;         /* 兜底页面底色（图片不可用时） */
@@ -77,7 +77,7 @@
      dark 由 multiply 滤镜统一染色，无需重定义 */
   --color-gradient-start: #ffce98;
   --color-gradient-end: #c8b8f0;
-  --color-card-heading: #c2185b;
+  --color-card-heading: #c2521a;  /* 焦糖橙红，色相走开 hover 玫瑰红 ΔE 127 (vs card 3.28:1 AA Large) */
   --color-social-hover: #e91e63;
   --color-avatar-glow: #ffa090;    /* 头像光晕色：light 用暖桃，与浅暖背景融合 */
 
@@ -128,9 +128,9 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --color-primary: #ffd6e0;        /* 浅粉，主文字 */
-    --color-secondary: #ffa8c5;      /* 中粉，次要文字 */
-    --color-muted: #d8a8bb;          /* 暖紫粉，静音文字 (vs 卡片 5.50:1 / canvas 8.63:1 / 黑 10.24:1，全 AA) */
-    --color-hover: #ff8fb1;          /* 亮粉，强调/悬停 */
+    --color-secondary: #d4c0a8;      /* 暖米色，次要文字 (去粉化让 hover 色相突变 ΔE 45.3 vs 当前 11.9) */
+    --color-muted: #c8b098;          /* 暖棕灰，静音文字 (vs card 5.62:1 AA / vs canvas 8.53:1 AA) */
+    --color-hover: #ff5c8a;          /* 深鲜玫瑰粉，强调/悬停 (粉感 + 鲜艳跳出，vs secondary 1.67 / vs card 4.11 接近 AA) */
     --color-border: rgba(255, 192, 211, 0.3); /* 半透明粉，边框 */
     --color-border-soft: rgba(255, 192, 211, 0.15); /* 弱边框：border 同色 alpha 0.15（border 0.3 的一半） */
     --color-canvas: #2a1018;         /* 暗紫粉兜底底色 */

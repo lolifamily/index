@@ -21,12 +21,11 @@ const { projects } = siteConfig;
     >
       {projects.map(project => (
         <li class="
-          group flex flex-col gap-2 rounded-2xl border-2 border-border
-          bg-white/25 px-5 py-4 shadow-sm
-          transition-[background-color,box-shadow] duration-300
-          hover:bg-white/40 hover:shadow-md
-          dark:bg-white/5
-          dark:hover:bg-white/10
+          group flex flex-col gap-2 rounded-2xl border-2 border-transparent
+          bg-white/35 px-5 py-4 transition-colors duration-300
+          hover:bg-white/55
+          dark:bg-white/6
+          dark:hover:bg-white/9
           forced-colors:hover:border-[Highlight]
         "
         >
@@ -45,6 +44,7 @@ const { projects } = siteConfig;
                   <a
                     href={link.url}
                     title={link.title}
+                    aria-label={`${project.name} ${link.title}`}
                     class="
                       inline-flex size-9 items-center justify-center
                       rounded-full text-primary
@@ -55,7 +55,7 @@ const { projects } = siteConfig;
                       motion-safe:update-fast:hover:scale-110
                     "
                   >
-                    <link.icon width="1.5rem" height="1.5rem" />
+                    <link.icon width="1.5rem" height="1.5rem" aria-hidden="true" />
                   </a>
                 </li>
               ))}
