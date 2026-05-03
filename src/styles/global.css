@@ -109,10 +109,10 @@
 
   /* 厚涂卡片：四层颜料堆叠（暖橙/玫瑰/紫粉/主底），primary 对最浅块仍 ≈8.9:1 AA */
   --gradient-card:
-    radial-gradient(ellipse at 22% 18%, #fff4e8 0%, transparent 55%),
+    radial-gradient(ellipse at 22% 18%, #ffe8c4 0%, transparent 55%),
     radial-gradient(ellipse at 82% 28%, #ffe1ec 0%, transparent 60%),
     radial-gradient(ellipse at 50% 95%, #f0d8e6 0%, transparent 65%),
-    linear-gradient(135deg, #fff0f3, #fde4ed);
+    linear-gradient(135deg, #fde6c4, #fde0e6);
 
   /* 外阴影：仅在 section 上，绘制于 border 外侧 */
   --shadow-card: 0 10px 40px rgba(255, 100, 140, 0.18);
