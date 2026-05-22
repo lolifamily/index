@@ -96,7 +96,7 @@ export default defineConfig({
   experimental: {
     clientPrerender: true,
     contentIntellisense: true,
-    rustCompiler: false,
+    rustCompiler: true,
     queuedRendering: {
       enabled: true,
       contentCache: true,

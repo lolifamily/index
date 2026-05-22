@@ -61,20 +61,6 @@ jobs:
         run: pnpm online:workers
         continue-on-error: true
 
-      - name: Deploy to Domestic VPS
-        if: github.ref == 'refs/heads/main'
-        uses: burnett01/rsync-deployments@66257cad6bfeb2171d3b6bfa6c9a22279dd9c3a1 # 8.0.5
-        id: domestic
-        with:
-          remote_host: "speedtest.lolifamily.js.org"
-          remote_port: 22022
-          remote_user: "root"
-          remote_path: "/var/www/html/lolifamily"
-          remote_key: ${{ secrets.SSH_KEY }}
-          path: "dist/*"
-          switches: -avzr --delete --no-owner --no-group
-        continue-on-error: true
-
       - name: Setup SSH for signing and pushing
         if: github.ref == 'refs/heads/main'
         run: |
@@ -167,8 +153,7 @@ jobs:
       # Disabled Netlify detection because we were frequently hitting its rate limits.
       - name: Exit with error if any step failed
         if: |
-          steps.domestic.outcome == 'failure' || steps.cloudflare_workers.outcome == 'failure' ||
-          steps.cloudflare_pages.outcome == 'failure' || steps.vercel.outcome == 'failure' ||
-          steps.github.outcome == 'failure' || steps.gitlab.outcome == 'failure' ||
-          steps.bitbucket.outcome == 'failure'
+          steps.cloudflare_workers.outcome == 'failure' || steps.cloudflare_pages.outcome == 'failure' ||
+          steps.vercel.outcome == 'failure' || steps.github.outcome == 'failure' ||
+          steps.gitlab.outcome == 'failure' || steps.bitbucket.outcome == 'failure'
         run: exit 1

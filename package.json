@@ -22,17 +22,17 @@
     "online:netlify": "pnpx --config.trust-policy= --package netlify-cli@latest netlify deploy --no-build --prod"
   },
   "dependencies": {
-    "@astrojs/compiler-rs": "^0.1.10",
-    "@astrojs/mdx": "^5.0.4",
+    "@astrojs/compiler-rs": "^0.2.1",
+    "@astrojs/mdx": "^5.0.6",
     "@astrojs/sitemap": "^3.7.2",
     "@astrojs/solid-js": "^6.0.1",
-    "@astrojs/ts-plugin": "^1.10.7",
+    "@astrojs/ts-plugin": "^1.10.9",
     "@fontsource-variable/comfortaa": "^5.2.8",
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "@phosphor-icons/core": "^2.1.1",
     "@playform/compress": "^0.2.3",
-    "@tailwindcss/vite": "^4.2.4",
-    "astro": "^6.2.1",
+    "@tailwindcss/vite": "^4.3.0",
+    "astro": "^6.3.6",
     "hastscript": "^9.0.1",
     "lightningcss": "^1.32.0",
     "medium-zoom-next": "^2.0.1",
@@ -44,9 +44,9 @@
     "remark-emoji": "^5.0.2",
     "remark-github-admonitions-to-directives": "^2.1.0",
     "sharp": "^0.34.5",
-    "solid-js": "^1.9.12",
-    "tailwindcss": "^4.2.4",
-    "terser": "^5.46.2",
+    "solid-js": "^1.9.13",
+    "tailwindcss": "^4.3.0",
+    "terser": "^5.47.1",
     "typescript": "^6.0.3",
     "unist-builder": "^4.0.0",
     "unist-util-visit": "^5.1.0",
@@ -54,7 +54,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
-    "@astrojs/language-server": "^2.16.7",
+    "@astrojs/language-server": "^2.16.9",
     "@eslint/css": "1.2.0",
     "@eslint/js": "^10.0.1",
     "@stylistic/eslint-plugin": "^5.10.0",
@@ -62,10 +62,10 @@
     "@types/eslint-plugin-tailwindcss": "^3.17.0",
     "@types/hast": "^3.0.4",
     "@types/mdast": "^4.0.4",
-    "@types/node": "^25.6.0",
-    "@typescript-eslint/parser": "^8.59.1",
-    "eslint": "^10.3.0",
-    "eslint-interactive": "^13.0.1",
+    "@types/node": "^25.9.1",
+    "@typescript-eslint/parser": "^8.59.4",
+    "eslint": "^10.4.0",
+    "eslint-interactive": "^14.0.0",
     "eslint-mdx": "^3.7.0",
     "eslint-plugin-astro": "^1.7.0",
     "eslint-plugin-better-tailwindcss": "^4.5.0",
@@ -74,8 +74,8 @@
     "eslint-plugin-solid": "^0.14.5",
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.1",
-    "tailwind-csstree": "^0.3.1",
-    "typescript-eslint": "^8.59.1"
+    "tailwind-csstree": "^0.3.2",
+    "typescript-eslint": "^8.59.4"
   },
   "remarkConfig": {
     "plugins": [
@@ -86,5 +86,5 @@
       "remark-gfm"
     ]
   },
-  "packageManager": "pnpm@10.33.2"
+  "packageManager": "pnpm@11.1.2"
 }
