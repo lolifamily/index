@@ -1,11 +1,12 @@
 /**
  * https://github.com/gatsbyjs/gatsby/blob/main/packages/gatsby-remark-remove-cjk-breaks/src/index.js
+ * Sätteri 版:text visitor 替换 value;inlineMath 前后标点用 ctx.parent/indexOf 取相邻 text 兄弟改写。
  */
 
-import { visitParents } from 'unist-util-visit-parents';
-import type { Root } from 'mdast';
+import { defineMdastPlugin } from 'satteri';
+import type { MdastPluginDefinition } from 'satteri';
 
-/* eslint-disable @stylistic/indent */
+/* eslint @stylistic/indent: ["error", 2, { "ignoreComments": true }] */
 const cjkChars = [
   '\\p{scx=Hani}',
   '\\p{scx=Bopomofo}',
@@ -59,12 +60,6 @@ const cjkChars = [
   '\\u{FE13}-\\u{FE16}',   // ︓︔︕︖ ... Glyphs for vertical variants (Latin symbols of vertical form)
   '\\u{FE17}-\\u{FE18}', // ︗︘ ... Glyphs for vertical variants
   '\\u{FE19}',            // ︙ ... Glyphs for vertical variants (Presentation Form for Vertical Horizontal Ellipsis)
-
-  // References:
-  // https://unicode.org/charts/
-  // https://unicode.org/Public/UCD/latest/ucd/Scripts.txt
-  // https://unicode.org/Public/UNIDATA/ScriptExtensions.txt
-  // https://unicode-table.com/en/
 ];
 
 const squaredLatinAbbrChars = [
@@ -82,38 +77,8 @@ const squaredLatinAbbrChars = [
                          // ... Squared Latin abbreviations, Abbreviations involving iter symbols, Squared Latin abbreviations
   '\\u{33FF}',           // ㏿ ... Squared Latin abbreviations (Square Gal)
 ];
-/* eslint-enable @stylistic/indent */
 
-// Emoji
-const emojiFlagSequence = '\\p{RI}\\p{RI}'; // emoji flag sequence
-const emojiPresentationSequence = '\\p{Emoji}\\u{EF0F}';
-const emojiKeycapSequence = '[0-9#*]\\u{FE0F}\\u{20E3}';
-const emojiModifierSequence = '\\p{Emoji_Modifier_Base}\\p{Emoji_Modifier}';
-const emojiTagSequence = `(?:\\p{Emoji}|${emojiModifierSequence}|${emojiPresentationSequence})[\\u{E0020}-\\u{E007E}]+\\u{E007F}`;
-const emojiCoreSequence = [
-  '\\p{Emoji}',
-  emojiPresentationSequence,
-  emojiKeycapSequence,
-  emojiModifierSequence,
-  emojiFlagSequence,
-].join('|');
-const emojiZWJSequence = `(?:\\p{Emoji}|${emojiPresentationSequence}|${emojiModifierSequence})(?:\\u{200d}(?:\\p{Emoji}|${emojiPresentationSequence}|${emojiModifierSequence}))+`;
-const emojiPattern = [
-  '\\p{Emoji_Presentation}', // default emoji presentation _character_
-  emojiCoreSequence,
-  emojiZWJSequence,
-  emojiTagSequence,
-].join('|');
-// Reference:
-// https://unicode.org/reports/tr51/#Definitions
-
-
-export default function remarkRemoveCjkBreaks({
-  includeHangul = false,
-  includeEmoji = false,
-  includeSquaredLatinAbbrs = false,
-  additionalRegexpPairs,
-}: {
+interface RemarkRemoveCjkBreaksOptions {
   includeHangul?: boolean;
   includeEmoji?: boolean;
   includeSquaredLatinAbbrs?: boolean;
@@ -121,13 +86,20 @@ export default function remarkRemoveCjkBreaks({
     beforeBreak?: string;
     afterBreak?: string;
   }[];
-} = {}) {
-  const charGroup = cjkChars;
+}
+
+export default function remarkRemoveCjkBreaksSatteri({
+  includeHangul = false,
+  includeEmoji = false,
+  includeSquaredLatinAbbrs = false,
+  additionalRegexpPairs,
+}: RemarkRemoveCjkBreaksOptions = {}): () => MdastPluginDefinition {
+  const charGroup = [...cjkChars];
   if (includeSquaredLatinAbbrs) charGroup.push(...squaredLatinAbbrChars);
   if (includeHangul) charGroup.push('\\p{scx=Hangul}');
 
   let pattern = `[${charGroup.join('')}]`;
-  if (includeEmoji) pattern = `${pattern}|${emojiPattern}`;
+  if (includeEmoji) pattern = `(?:${pattern}|\\p{RGI_Emoji})`;
 
   const regexpPairs = additionalRegexpPairs ?? [
     { beforeBreak: undefined, afterBreak: undefined },
@@ -139,15 +111,18 @@ export default function remarkRemoveCjkBreaks({
 
     return new RegExp(
       `(${pattern + beforeBreak})(?:\r\n|\r|\n)(${pattern + afterBreak})`,
-      'gu',
+      'gv',
     );
   });
 
-  return function (tree: Root) {
-    visitParents(tree, 'text', (node) => {
+  return () => defineMdastPlugin({
+    name: 'remark-remove-cjk-breaks-satteri',
+    text(node, ctx) {
+      let value = node.value;
       for (const regItem of regexpItems) {
-        node.value = node.value.replace(regItem, '$1$2');
+        value = value.replace(regItem, '$1$2');
       }
-    });
-  };
+      if (value !== node.value) ctx.setProperty(node, 'value', value);
+    },
+  });
 }

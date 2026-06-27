@@ -4,19 +4,16 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
 
-import rehypeSanitize from './src/plugins/rehype-sanitize';
-import remarkDirectiveRehype from './src/plugins/remark-directive-rehype';
-import remarkRemoveCjkBreaks from './src/plugins/remark-remove-cjk-breaks';
-import remarkPangu from './src/plugins/remark-pangu';
-
-import remarkDirective from 'remark-directive';
-import remarkEmoji from 'remark-emoji';
-import remarkGithubAdmonitionsToDirectives from 'remark-github-admonitions-to-directives';
-import { remarkDefinitionList, defListHastHandlers } from 'remark-definition-list';
+import rehypeSanitize from './src/plugins/rehype-sanitize-satteri';
+import remarkDirective from './src/plugins/remark-directive-satteri';
+import remarkRemoveCjkBreaks from './src/plugins/remark-remove-cjk-breaks-satteri';
+import remarkPangu from './src/plugins/remark-pangu-satteri';
 
 import playformCompress from '@playform/compress';
 
 import { browserslistToTargets } from 'lightningcss';
+
+import { satteri } from '@astrojs/markdown-satteri';
 
 // https://astro.build/config
 export default defineConfig({
@@ -66,22 +63,28 @@ export default defineConfig({
     format: 'file',
   },
   markdown: {
-    remarkPlugins: [remarkDefinitionList, remarkGithubAdmonitionsToDirectives,
-      remarkDirective, remarkDirectiveRehype, remarkPangu,
-      [remarkRemoveCjkBreaks, {
-        includeEmoji: true,
-      }], [remarkEmoji, {
-        accessible: true,
-      }]],
-    rehypePlugins: [rehypeSanitize],
-    remarkRehype: {
-      handlers: {
-        ...defListHastHandlers,
+    processor: satteri({
+      features: {
+        math: true,
+        frontmatter: true,
+        directive: true,
+        gfm: {
+          footnotes: {
+            label: '脚注',
+            backContent: '\u2003', // Em Space
+            // satteri 的 referenceNumber 已是 1-based（remark-rehype 的 idx 是 0-based 需 +1）
+            backLabel: (referenceNumber: number, rerunIndex: number) =>
+              `返回引用 ${referenceNumber}${rerunIndex > 1 ? `-${rerunIndex}` : ''}`,
+          },
+        },
       },
-      footnoteBackContent: '\u2003', // Em Space
-      footnoteBackLabel: (idx, reIdx) => `返回引用 ${idx + 1}${reIdx > 1 ? `-${reIdx}` : ''}`,
-      footnoteLabel: '脚注',
-    },
+      mdastPlugins: [
+        remarkDirective,
+        remarkPangu,
+        remarkRemoveCjkBreaks({ includeEmoji: true }),
+      ],
+      hastPlugins: [rehypeSanitize],
+    }),
   },
   image: {
     layout: 'constrained',
@@ -96,10 +99,5 @@ export default defineConfig({
   experimental: {
     clientPrerender: true,
     contentIntellisense: true,
-    rustCompiler: true,
-    queuedRendering: {
-      enabled: true,
-      contentCache: true,
-    },
   },
 });
